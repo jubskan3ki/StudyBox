@@ -1,4 +1,29 @@
-frontend
+# Ignorer le dossier frontend et les fichiers sensibles
+frontend/
 .env
-docker-compose.yml
-Dockerfile
+
+# Ignorer les fichiers de configuration sensibles
+backend/config/firebase-adminsdk.json
+
+# Ignorer les fichiers de build et de cache
+node_modules/
+dist/
+build/
+
+# Ignorer les fichiers spécifiques à Docker et aux bases de données
+db_data/
+*.sql
+*.log
+
+# Ignorer les fichiers de configuration spécifiques à l'IDE et au système d'exploitation
+.DS_Store
+*.swp
+.vscode/
+.idea/
+*.iml
+
+# Ignorer les binaires et autres fichiers générés
+bin/
+*.exe
+*.out
+*.app
