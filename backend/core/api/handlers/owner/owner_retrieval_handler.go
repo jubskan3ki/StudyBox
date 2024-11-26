@@ -100,3 +100,56 @@ func HandleGetAllOwners(c *gin.Context, ownerService *owner.OwnerServiceType) {
 
 	c.JSON(http.StatusOK, responseGlobal.SuccessResponse("Propriétaires récupérés avec succès", ownerResponses))
 }
+
+// HandleGetOwnersByStatus récupère les propriétaires en fonction du statut
+func HandleGetOwnersByStatus(c *gin.Context, ownerService *owner.OwnerServiceType, status string) {
+	var owners []models.Owner
+	var err error
+
+	// Récupérer les propriétaires selon le statut demandé
+	switch status {
+	case "active":
+		owners, err = ownerService.Retrieval.GetActiveOrganisations()
+	case "inactive":
+		owners, err = ownerService.Retrieval.GetInactiveOrganisations()
+	case "pending":
+		owners, err = ownerService.Retrieval.GetPendingOrganisations()
+	case "suspended":
+		owners, err = ownerService.Retrieval.GetSuspendedOrganisations()
+	default:
+		c.JSON(http.StatusBadRequest, responseGlobal.ErrorResponse("Statut invalide", nil))
+		return
+	}
+
+	if err != nil {
+		log.Printf("Erreur lors de la récupération des propriétaires: %v", err)
+		c.JSON(http.StatusInternalServerError, responseGlobal.ErrorResponse("Échec de la récupération des propriétaires", err))
+		return
+	}
+
+	if len(owners) == 0 {
+		c.JSON(http.StatusOK, responseGlobal.SuccessResponse("Aucun propriétaire trouvé", nil))
+		return
+	}
+
+	// Construire la réponse
+	var ownerResponses []response.OwnerResponse
+	for _, ownerProfile := range owners {
+		ownerResponses = append(ownerResponses, response.OwnerResponse{
+			ID:          ownerProfile.ID,
+			CompanyName: ownerProfile.CompanyName,
+			Type:        ownerProfile.Type,
+			Address:     ownerProfile.Address,
+			City:        ownerProfile.City,
+			PostalCode:  ownerProfile.PostalCode,
+			Region:      ownerProfile.Region,
+			Country:     ownerProfile.Country,
+			Phone:       ownerProfile.Phone,
+			Description: ownerProfile.Description,
+			Status:      ownerProfile.Status,
+			SIRET:       ownerProfile.SIRET,
+		})
+	}
+
+	c.JSON(http.StatusOK, responseGlobal.SuccessResponse("Propriétaires récupérés avec succès", ownerResponses))
+}

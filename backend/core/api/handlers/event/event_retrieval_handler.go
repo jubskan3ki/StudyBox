@@ -4,8 +4,10 @@ import (
 	responseGlobal "backend/core/api/response"
 	response "backend/core/api/response/event"
 	"backend/core/services/event"
+	"backend/core/services/user"
 	"backend/core/utils"
 	"errors"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -81,4 +83,46 @@ func HandleListEvents(c *gin.Context, eventService *event.EventServiceType) {
 	}
 
 	c.JSON(http.StatusOK, responseGlobal.SuccessResponse("Liste des événements récupérée avec succès", resp))
+}
+
+// HandleGetMyEvents récupère les événements créés par l'utilisateur connecté
+func HandleGetMyEvents(c *gin.Context, eventService *event.EventServiceType, userService *user.UserServiceType) {
+	userID, err := userService.Retrieval.GetUserIDFromRequest(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, responseGlobal.ErrorResponse("Utilisateur non connecté", err))
+		return
+	}
+
+	events, err := eventService.Retrieval.GetEventsByUserID(userID)
+	if err != nil {
+		log.Printf("Erreur lors de la récupération des événements de l'utilisateur: %v", err)
+		c.JSON(http.StatusInternalServerError, responseGlobal.ErrorResponse("Erreur lors de la récupération des événements", err))
+		return
+	}
+
+	c.JSON(http.StatusOK, responseGlobal.SuccessResponse("Événements récupérés avec succès", events))
+}
+
+// HandleGetAllTags récupère tous les tags d'événements
+func HandleGetAllTags(c *gin.Context, eventService *event.EventServiceType) {
+	tags, err := eventService.Retrieval.GetAllTags()
+	if err != nil {
+		log.Printf("Erreur lors de la récupération des tags: %v", err)
+		c.JSON(http.StatusInternalServerError, responseGlobal.ErrorResponse("Erreur lors de la récupération des tags", err))
+		return
+	}
+
+	c.JSON(http.StatusOK, responseGlobal.SuccessResponse("Tags récupérés avec succès", tags))
+}
+
+// HandleGetAllCategories récupère toutes les catégories d'événements
+func HandleGetAllCategories(c *gin.Context, eventService *event.EventServiceType) {
+	categories, err := eventService.Retrieval.GetAllCategories()
+	if err != nil {
+		log.Printf("Erreur lors de la récupération des catégories: %v", err)
+		c.JSON(http.StatusInternalServerError, responseGlobal.ErrorResponse("Erreur lors de la récupération des catégories", err))
+		return
+	}
+
+	c.JSON(http.StatusOK, responseGlobal.SuccessResponse("Catégories récupérées avec succès", categories))
 }

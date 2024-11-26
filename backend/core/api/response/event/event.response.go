@@ -13,14 +13,14 @@ type OptionResponse struct {
 	Title       string  `json:"title"`
 	Description string  `json:"description"`
 	Price       float64 `json:"price"`
-	Stock       int     `json:"stock"`
+	Stock       int32   `json:"stock"`
 }
 
 type TarifResponse struct {
 	Title       string  `json:"title"`
 	Description string  `json:"description"`
 	Price       float64 `json:"price"`
-	Stock       int     `json:"stock"`
+	Stock       int32   `json:"stock"`
 }
 
 type EventResponse struct {

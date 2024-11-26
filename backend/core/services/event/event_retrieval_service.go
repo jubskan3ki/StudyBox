@@ -4,7 +4,10 @@ import (
 	stores "backend/core/stores/event"
 	"backend/database/models"
 	"encoding/json"
+	"errors"
 	"fmt"
+
+	"gorm.io/gorm"
 )
 
 type EventRetrievalServiceType struct {
@@ -139,4 +142,55 @@ func (s *EventRetrievalServiceType) GetTagNamesByIDs(tagIDs []int64) ([]string, 
 		names[i] = tag.Name
 	}
 	return names, nil
+}
+
+// GetEventsByUserID récupère les événements créés par un utilisateur spécifique
+func (s *EventRetrievalServiceType) GetEventsByUserID(userID uint) ([]models.Event, error) {
+	events, err := s.eventStore.GetEventsByUserID(userID)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("aucun événement trouvé pour l'utilisateur ID %d : %w", userID, err)
+		}
+		return nil, fmt.Errorf("erreur lors de la récupération des événements pour l'utilisateur ID %d : %w", userID, err)
+	}
+
+	if len(events) == 0 {
+		return nil, fmt.Errorf("aucun événement trouvé pour l'utilisateur ID %d", userID)
+	}
+
+	return events, nil
+}
+
+// GetAllTags récupère tous les tags d'événements
+func (s *EventRetrievalServiceType) GetAllTags() ([]models.EventTag, error) {
+	tags, err := s.eventTagStore.GetTags()
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("aucun tag trouvé : %w", err)
+		}
+		return nil, fmt.Errorf("erreur lors de la récupération des tags : %w", err)
+	}
+
+	if len(tags) == 0 {
+		return nil, errors.New("aucun tag trouvé")
+	}
+
+	return tags, nil
+}
+
+// GetAllCategories récupère toutes les catégories d'événements
+func (s *EventRetrievalServiceType) GetAllCategories() ([]models.EventCategory, error) {
+	categories, err := s.eventCategoryStore.GetCategories()
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("aucune catégorie trouvée : %w", err)
+		}
+		return nil, fmt.Errorf("erreur lors de la récupération des catégories : %w", err)
+	}
+
+	if len(categories) == 0 {
+		return nil, errors.New("aucune catégorie trouvée")
+	}
+
+	return categories, nil
 }

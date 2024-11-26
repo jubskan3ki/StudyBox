@@ -38,6 +38,10 @@ func (s *UserStoreType) UpdateFields(userID uint, fields map[string]interface{})
 	return s.db.Model(&models.User{}).Where("id = ?", userID).Updates(fields).Error
 }
 
+func (s *UserStoreType) UpdateProfileImage(userID uint, imageURL string) error {
+	return s.db.Model(&models.User{}).Where("id = ?", userID).Update("profile_image", imageURL).Error
+}
+
 // Récupérer un utilisateur par son ID avec préchargement du rôle
 func (s *UserStoreType) GetByID(id uint) (*models.User, error) {
 	var user models.User

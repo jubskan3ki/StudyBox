@@ -33,6 +33,10 @@ func (s *OwnerStoreType) UpdateFields(ownerID uint, fields map[string]interface{
 	return s.db.Model(&models.Owner{}).Where("id = ?", ownerID).Updates(fields).Error
 }
 
+func (s *OwnerStoreType) UpdateProfileImage(ownerID uint, imageURL string) error {
+	return s.db.Model(&models.Owner{}).Where("id = ?", ownerID).Update("profile_image", imageURL).Error
+}
+
 // Supprimer un Owner par ID
 func (s *OwnerStoreType) Delete(id uint) error {
 	return s.db.Delete(&models.Owner{}, id).Error

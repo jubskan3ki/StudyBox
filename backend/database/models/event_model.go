@@ -11,8 +11,8 @@ type Event struct {
 	gorm.Model
 	OwnerID      uint
 	OwnerType    string `gorm:"size:20;not null;check:owner_type IN ('association', 'owner', 'school')"`
-	ImageURL     string `gorm:"size:255"`
-	VideoURL     string `gorm:"size:255"`
+	ImageURL     string `gorm:"type:text"`
+	VideoURL     string `gorm:"type:text"`
 	Title        string `gorm:"size:100;not null"`
 	Subtitle     string `gorm:"size:255"`
 	StartDate    time.Time

@@ -55,3 +55,15 @@ func (s *EventDescriptionStoreType) GetByEventID(eventID uint) ([]models.EventDe
 	}
 	return descriptions, nil
 }
+
+// GetByID récupère une description spécifique par ID
+func (s *EventDescriptionStoreType) GetByID(id uint) (*models.EventDescription, error) {
+	var description models.EventDescription
+	if err := s.db.First(&description, id).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, gorm.ErrRecordNotFound
+		}
+		return nil, err
+	}
+	return &description, nil
+}

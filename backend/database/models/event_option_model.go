@@ -10,5 +10,5 @@ type EventOption struct {
 	Title       string  `gorm:"size:100;not null"`
 	Description string  `gorm:"type:text"`
 	Price       float64 `gorm:"default:0.0"`
-	Stock       int     `gorm:"default:0"`
+	Stock       int32   `gorm:"default:0"`
 }

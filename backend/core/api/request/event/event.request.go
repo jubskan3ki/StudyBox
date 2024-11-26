@@ -1,14 +1,13 @@
 package request
 
 import (
+	"mime/multipart"
 	"time"
 )
 
-// package request
-
 type CreateEventRequest struct {
-	ImageURL     string                    `json:"image_urls"`
-	VideoURL     string                    `json:"video_url"`
+	ImageFiles   []*multipart.FileHeader   `form:"image_files"`
+	VideoFiles   []*multipart.FileHeader   `form:"video_files"`
 	Title        string                    `json:"title" binding:"required,max=100"`
 	Subtitle     string                    `json:"subtitle" binding:"max=255"`
 	StartDate    time.Time                 `json:"start_date" binding:"required"`
@@ -31,8 +30,6 @@ type CreateEventRequest struct {
 }
 
 type UpdateEventRequest struct {
-	ImageURL     string                    `json:"image_urls"`
-	VideoURL     string                    `json:"video_url"`
 	Title        string                    `json:"title" binding:"omitempty,max=100"`
 	Subtitle     string                    `json:"subtitle" binding:"omitempty,max=255"`
 	StartDate    time.Time                 `json:"start_date"`
@@ -67,7 +64,7 @@ type EventOptionRequest struct {
 	Title       string  `json:"title" binding:"required,max=100"`
 	Description string  `json:"description" binding:"omitempty"`
 	Price       float64 `json:"price" binding:"gte=0"`
-	Stock       int     `json:"stock" binding:"gte=0"`
+	Stock       int32   `json:"stock" binding:"gte=0"`
 }
 
 // Définition de la structure pour les tarifs d'un événement
@@ -76,5 +73,5 @@ type EventTarifRequest struct {
 	Title       string  `json:"title" binding:"required,max=100"`
 	Description string  `json:"description" binding:"omitempty"`
 	Price       float64 `json:"price" binding:"gte=0"`
-	Stock       int     `json:"stock" binding:"gte=0"`
+	Stock       int32   `json:"stock" binding:"gte=0"`
 }

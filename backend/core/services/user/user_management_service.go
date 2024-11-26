@@ -72,17 +72,16 @@ func (s *UserManagementServiceType) UpdateUserProfile(userID uint, input request
 
 	// Créer un map pour stocker les champs à mettre à jour
 	updates := map[string]interface{}{
-		"first_name":    input.FirstName,
-		"last_name":     input.LastName,
-		"email":         input.Email,
-		"pseudo":        input.Pseudo,
-		"profile_image": input.ProfileImage,
-		"birth_date":    input.BirthDate,
-		"country":       input.Country,
-		"city":          input.City,
-		"address":       input.Address,
-		"postal_code":   input.PostalCode,
-		"profile_type":  input.ProfileType,
+		"first_name":   input.FirstName,
+		"last_name":    input.LastName,
+		"email":        input.Email,
+		"pseudo":       input.Pseudo,
+		"birth_date":   input.BirthDate,
+		"country":      input.Country,
+		"city":         input.City,
+		"address":      input.Address,
+		"postal_code":  input.PostalCode,
+		"profile_type": input.ProfileType,
 	}
 
 	// Vérifier si le numéro de téléphone est valide avant de l'ajouter

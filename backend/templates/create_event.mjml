@@ -2,7 +2,7 @@
   <mj-head>
     <mj-title>Notification d'Événement - StudiMove</mj-title>
     <mj-attributes>
-      <mj-all font-family="Arial, sans-serif" />
+      <mj-all font-family="Roboto, Arial, sans-serif" />
       <mj-class
         name="primary-text"
         color="#333333"
@@ -12,7 +12,7 @@
       <mj-class
         name="footer-text"
         color="#888888"
-        font-size="12px"
+        font-size="14px"
         line-height="1.6"
       />
     </mj-attributes>
@@ -20,9 +20,13 @@
       .button { background-color: #49D4C6; color: #FFFFFF; text-decoration:
       none; padding: 12px 30px; border-radius: 8px; font-weight: bold; display:
       inline-block; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0,
-      0.1); } .highlight { color: #0F52BA; font-weight: bold; } .footer-link {
-      color: #888888; text-decoration: none; } .body-section { border-radius:
-      10px; box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1); }
+      0.1); transition: transform 0.2s, box-shadow 0.2s; } .button:hover {
+      background-color: #0F52BA; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      transform: scale(1.05); } .highlight { color: #0F52BA; font-weight: bold;
+      } .footer-link { color: #888888; text-decoration: none; }
+      .footer-link:hover { color: #0F52BA; text-decoration: underline; }
+      .body-section { border-radius: 10px; box-shadow: 0 4px 5px rgba(0, 0, 0,
+      0.1); }
     </mj-style>
   </mj-head>
 
@@ -32,12 +36,12 @@
       <mj-section
         background-color="#FFFFFF"
         padding="20px"
-        border-radius="12px 12px 0 0"
+        border-radius="12px"
         css-class="body-section"
       >
         <mj-column>
           <mj-image
-            src="https://your-logo-url.com/logo.png"
+            src="https://your-logo-url.com/logo.svg"
             width="120px"
             alt="StudiMove Logo"
             align="center"
@@ -49,7 +53,7 @@
             font-weight="bold"
             padding-top="10px"
           >
-            Notification d'Événement
+            {{.event_title}}
           </mj-text>
         </mj-column>
       </mj-section>
@@ -60,17 +64,12 @@
       padding="20px"
       background-color="#FFFFFF"
       css-class="body-section"
+      border-radius="12px"
     >
       <mj-section padding-left="20px" padding-right="20px">
         <mj-column>
-          <!-- Titre de l'événement -->
-          <mj-text font-size="22px" color="#0F52BA" font-weight="bold">
-            {{event_title}}
-          </mj-text>
-          <mj-divider border-color="#B8C0CC" padding="20px 0" />
-
           <!-- Message d'introduction -->
-          <mj-text mj-class="primary-text"> Bonjour, </mj-text>
+          <mj-text mj-class="primary-text">Bonjour,</mj-text>
           <mj-text mj-class="primary-text" padding-top="10px">
             Nous avons le plaisir de vous inviter à notre événement spécial :
             <span class="highlight">{{event_title}}</span>.
@@ -78,8 +77,8 @@
 
           <!-- Détails de l'événement -->
           <mj-text mj-class="primary-text" padding-top="20px">
-            📅 Date : <strong>{{event_date}}</strong><br />
-            📍 Lieu : <strong>{{event_location}}</strong>
+            📅 Date : <strong>{{.event_date}}</strong><br />
+            📍 Lieu : <strong>{{.event_location}}</strong>
           </mj-text>
 
           <!-- Bouton d'accès à l'événement -->
@@ -93,7 +92,6 @@
           </mj-text>
 
           <!-- Signature -->
-          <mj-divider border-color="#B8C0CC" padding="30px 0" />
           <mj-text mj-class="primary-text" font-weight="bold">
             Cordialement,
           </mj-text>
@@ -106,7 +104,7 @@
     <mj-wrapper full-width="full-width" padding="20px 0">
       <mj-section
         background-color="#FFFFFF"
-        border-radius="0 0 12px 12px"
+        border-radius="12px"
         css-class="body-section"
       >
         <mj-column>

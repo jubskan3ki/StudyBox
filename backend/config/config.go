@@ -20,7 +20,10 @@ type Config struct {
 	DB                 DBConfig
 	ServerPort         string
 	S3Bucket           string
+	S3Region           string
 	APIBaseURL         string
+	AWSAccessKey       string
+	AWSSecretKey       string
 	SMTPHost           string
 	SMTPPort           string
 	SMTPUser           string
@@ -35,9 +38,9 @@ var AppConfig *Config
 func LoadConfig() error {
 	viper.SetConfigFile(".env")
 
-	// Lire le fichier de configuration
+	// Lire le fichier de configuration .env
 	if err := viper.ReadInConfig(); err != nil {
-		log.Printf("Erreur lors de la lecture du fichier de configuration : %v. Utilisation des variables d'environnement uniquement.", err)
+		log.Printf("Erreur lors de la lecture du fichier .env : %v. Utilisation des variables d'environnement uniquement.", err)
 	} else {
 		fmt.Println("Fichier de configuration .env chargé avec succès.")
 	}
@@ -54,6 +57,9 @@ func LoadConfig() error {
 		},
 		ServerPort:         getEnv("SERVER_PORT", viper.GetString("SERVER_PORT")),
 		S3Bucket:           getEnv("S3_BUCKET", viper.GetString("S3_BUCKET")),
+		S3Region:           getEnv("AWS_REGION", viper.GetString("AWS_REGION")),
+		AWSAccessKey:       getEnv("AWS_ACCESS_KEY_ID", viper.GetString("AWS_ACCESS_KEY_ID")),
+		AWSSecretKey:       getEnv("AWS_SECRET_ACCESS_KEY", viper.GetString("AWS_SECRET_ACCESS_KEY")),
 		APIBaseURL:         getEnv("API_BASE_URL", viper.GetString("API_BASE_URL")),
 		SMTPHost:           getEnv("SMTP_HOST", viper.GetString("SMTP_HOST")),
 		SMTPPort:           getEnv("SMTP_PORT", viper.GetString("SMTP_PORT")),

@@ -20,7 +20,7 @@ type User struct {
 	Email         string `gorm:"unique;not null"`
 	Password      string `gorm:"not null"`
 	Phone         int    `gorm:"type:int"`
-	ProfileImage  string `gorm:"size:255"`
+	ProfileImage  string `gorm:"type:text"`
 	BirthDate     time.Time
 	Country       string `gorm:"size:100"`
 	Region        string `gorm:"size:50"`

@@ -3,6 +3,7 @@ package event
 import (
 	"backend/database/models"
 	"errors"
+	"strings"
 
 	"gorm.io/gorm"
 )
@@ -26,6 +27,20 @@ func (s *EventStoreType) Create(event *models.Event) error {
 
 func (s *EventStoreType) Update(event *models.Event) error {
 	return s.db.Save(event).Error
+}
+
+func (s *EventStoreType) UpdateFields(eventID uint, updates map[string]interface{}) error {
+	return s.db.Model(&models.Event{}).Where("id = ?", eventID).Updates(updates).Error
+}
+
+func (s *EventStoreType) UpdateEventImages(eventID uint, imageURL []string) error {
+	imageURLStr := strings.Join(imageURL, ",")
+	return s.db.Model(&models.Event{}).Where("id = ?", eventID).Update("image_url", imageURLStr).Error
+}
+
+func (s *EventStoreType) UpdateEventVideos(eventID uint, videoURL []string) error {
+	videoURLStr := strings.Join(videoURL, ",")
+	return s.db.Model(&models.Event{}).Where("id = ?", eventID).Update("video_url", videoURLStr).Error
 }
 
 func (s *EventStoreType) Delete(id uint) error {
@@ -121,4 +136,18 @@ func (s *EventStoreType) GetRecommendedEventsByTags(tags, categories []string, e
 		Find(&recommendedEvents).
 		Error
 	return recommendedEvents, err
+}
+
+// GetEventsByUserID récupère tous les événements créés par un utilisateur
+func (s *EventStoreType) GetEventsByUserID(userID uint) ([]models.Event, error) {
+	var events []models.Event
+	err := s.db.
+		Where("owner_id = ?", userID).
+		Preload("Categories").
+		Preload("Tags").
+		Preload("Options").
+		Preload("Tarifs").
+		Preload("Descriptions").
+		Find(&events).Error
+	return events, err
 }

@@ -7,7 +7,6 @@ import (
 	"backend/core/services/owner"
 	"backend/core/services/user"
 	"backend/core/utils"
-	"backend/database/models"
 	"errors"
 	"net/http"
 	"strconv"
@@ -24,48 +23,31 @@ func HandleCreateEvent(c *gin.Context, eventService *event.EventServiceType, own
 		return
 	}
 
+	// Récupérer les claims pour obtenir l'ID utilisateur
 	claims, err := utils.GetClaimsFromContext(c)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, responseGlobal.ErrorResponse("Jeton invalide ou expiré", err))
 		return
 	}
 
+	// Récupérer les informations de l'owner à partir du service
 	owner, err := ownerService.Retrieval.GetOwnerByUserID(claims.UserID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, responseGlobal.ErrorResponse("Erreur lors de la récupération des informations de l'owner", err))
 		return
 	}
 
-	event := models.Event{
-		OwnerID:    owner.ID,
-		OwnerType:  owner.Type,
-		ImageURL:   createEventReq.ImageURL,
-		VideoURL:   createEventReq.VideoURL,
-		Title:      createEventReq.Title,
-		Subtitle:   createEventReq.Subtitle,
-		StartDate:  createEventReq.StartDate,
-		EndDate:    createEventReq.EndDate,
-		StartTime:  createEventReq.StartTime,
-		EndTime:    createEventReq.EndTime,
-		IsOnline:   createEventReq.IsOnline,
-		IsPublic:   createEventReq.IsPublic,
-		Address:    createEventReq.Address,
-		City:       createEventReq.City,
-		PostalCode: createEventReq.PostalCode,
-		Region:     createEventReq.Region,
-		Country:    createEventReq.Country,
-	}
-
-	if err := eventService.Management.CreateEvent(&event, createEventReq); err != nil {
+	// Créer l'événement en utilisant le service avec OwnerID et OwnerType séparément
+	event, err := eventService.Management.CreateEvent(createEventReq, owner.ID, owner.Type)
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, responseGlobal.ErrorResponse("Erreur lors de la création de l'événement", err))
 		return
 	}
 
-	resp := buildEventResponse(&event, eventService)
+	resp := buildEventResponse(event, eventService)
 	c.JSON(http.StatusCreated, responseGlobal.SuccessResponse("Événement créé avec succès", resp))
 }
 
-// HandleUpdateEvent gère la mise à jour d'un événement
 func HandleUpdateEvent(c *gin.Context, eventService *event.EventServiceType, ownerService *owner.OwnerServiceType) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -106,7 +88,8 @@ func HandleUpdateEvent(c *gin.Context, eventService *event.EventServiceType, own
 		return
 	}
 
-	if err := eventService.Management.UpdateEvent(event, updateEventReq); err != nil {
+	// Mettre à jour l'événement avec le service
+	if err := eventService.Management.UpdateEvent(uint(id), updateEventReq); err != nil {
 		c.JSON(http.StatusInternalServerError, responseGlobal.ErrorResponse("Erreur lors de la mise à jour", err))
 		return
 	}
@@ -114,6 +97,7 @@ func HandleUpdateEvent(c *gin.Context, eventService *event.EventServiceType, own
 	resp := buildEventResponse(event, eventService)
 	c.JSON(http.StatusOK, responseGlobal.SuccessResponse("Événement mis à jour avec succès", resp))
 }
+
 func HandleDeleteEvent(c *gin.Context, eventService *event.EventServiceType, userService *user.UserServiceType) {
 	// Récupérer l'ID de l'événement depuis les paramètres
 	eventID, err := strconv.Atoi(c.Param("id"))

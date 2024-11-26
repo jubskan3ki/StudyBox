@@ -1,20 +1,22 @@
 package event
 
 import (
+	"backend/core/services/upload"
 	stores "backend/core/stores/event"
 
 	"gorm.io/gorm"
 )
 
-// EventService regroupe les services de gestion, récupération et interactions des événements
+// EventServiceType regroupe les services de gestion, récupération, interactions et upload des événements
 type EventServiceType struct {
 	Management  *EventManagementServiceType
 	Retrieval   *EventRetrievalServiceType
 	Interaction *EventInteractionServiceType
+	Upload      *EventUploadServiceType
 }
 
 // EventService crée une nouvelle instance de EventService avec ses sous-services
-func EventService(db *gorm.DB) *EventServiceType {
+func EventService(db *gorm.DB, uploadService upload.UploadService) *EventServiceType {
 	// Initialiser les stores
 	eventStore := stores.EventStore(db)
 	eventTagStore := stores.EventTagStore(db)
@@ -56,9 +58,13 @@ func EventService(db *gorm.DB) *EventServiceType {
 		eventCategoryStore,
 	)
 
+	// Initialiser le service d'upload
+	eventUploadService := EventUploadService(uploadService, eventStore)
+
 	return &EventServiceType{
 		Management:  managementService,
 		Retrieval:   retrievalService,
 		Interaction: interactionService,
+		Upload:      eventUploadService,
 	}
 }

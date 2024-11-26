@@ -2,7 +2,7 @@
   <mj-head>
     <mj-title>Bienvenue sur StudiMove !</mj-title>
     <mj-attributes>
-      <mj-all font-family="Arial, sans-serif" />
+      <mj-all font-family="Roboto, Arial, sans-serif" />
       <mj-class
         name="primary-text"
         color="#333333"
@@ -12,7 +12,7 @@
       <mj-class
         name="footer-text"
         color="#888888"
-        font-size="12px"
+        font-size="14px"
         line-height="1.6"
       />
     </mj-attributes>
@@ -20,24 +20,28 @@
       .button { background-color: #49D4C6; color: #FFFFFF; text-decoration:
       none; padding: 12px 30px; border-radius: 8px; font-weight: bold; display:
       inline-block; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0,
-      0.1); } .highlight { color: #0F52BA; font-weight: bold; } .footer-link {
-      color: #888888; text-decoration: none; } .body-section { border-radius:
-      10px; box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1); }
+      0.1); transition: transform 0.2s, box-shadow 0.2s; } .button:hover {
+      background-color: #0F52BA; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      transform: scale(1.05); } .highlight { color: #0F52BA; font-weight: bold;
+      } .footer-link { color: #888888; text-decoration: none; }
+      .footer-link:hover { color: #0F52BA; text-decoration: underline; }
+      .body-section { border-radius: 10px; box-shadow: 0 4px 5px rgba(0, 0, 0,
+      0.1); }
     </mj-style>
   </mj-head>
 
-  <mj-body background-color="#f3f4f6" width="600px">
+  <mj-body background-color="#F3F4F6" width="600px">
     <!-- En-tête avec logo -->
     <mj-wrapper full-width="full-width" padding="20px 0">
       <mj-section
         background-color="#FFFFFF"
         padding="20px"
-        border-radius="12px 12px 0 0"
+        border-radius="12px"
         css-class="body-section"
       >
         <mj-column>
           <mj-image
-            src="https://your-logo-url.com/logo.png"
+            src="https://your-logo-url.com/logo.svg"
             width="120px"
             alt="StudiMove Logo"
             align="center"
@@ -60,6 +64,7 @@
       padding="20px"
       background-color="#FFFFFF"
       css-class="body-section"
+      border-radius="12px"
     >
       <mj-section padding-left="20px" padding-right="20px">
         <mj-column>
@@ -71,7 +76,7 @@
             Merci de rejoindre la communauté
             <span class="highlight">StudiMove</span> ! Nous sommes ravis de vous
             compter parmi nous. Découvrez des événements exclusifs, des
-            rencontres et de nouvelles expériences.
+            rencontres enrichissantes et de nouvelles expériences inoubliables.
           </mj-text>
 
           <!-- Bouton pour commencer à explorer -->
@@ -83,11 +88,11 @@
 
           <!-- Message de support -->
           <mj-text mj-class="primary-text" padding-top="20px">
-            Nous restons disponibles pour toute question ou assistance.
+            Pour toute question ou assistance, notre équipe est à votre
+            disposition.
           </mj-text>
 
           <!-- Signature -->
-          <mj-divider border-color="#B8C0CC" padding="30px 0" />
           <mj-text mj-class="primary-text" font-weight="bold">
             Cordialement,
           </mj-text>
@@ -100,7 +105,7 @@
     <mj-wrapper full-width="full-width" padding="20px 0">
       <mj-section
         background-color="#FFFFFF"
-        border-radius="0 0 12px 12px"
+        border-radius="12px"
         css-class="body-section"
       >
         <mj-column>

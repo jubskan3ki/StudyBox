@@ -34,9 +34,10 @@ func OwnerRoutes(routerGroup *gin.RouterGroup, ownerService *owner.OwnerServiceT
 			ownerHandlers.HandleGetAllOwners(c, ownerService)
 		})
 
-		// Route pour mettre à jour un owner par ID (Admin ou rôle spécifique seulement)
-		ownerGroup.PUT("/:id", middleware.RoleMiddleware(userService, []string{"Owner"}), func(c *gin.Context) {
-			ownerHandlers.HandleUpdateOwner(c, ownerService, userService)
+		// Route pour récupérer les owners par statut
+		ownerGroup.GET("/status/:status", func(c *gin.Context) {
+			status := c.Param("status")
+			ownerHandlers.HandleGetOwnersByStatus(c, ownerService, status)
 		})
 	}
 }
