@@ -1,10 +1,8 @@
-# Ignorer le dossier frontend et les fichiers sensibles
-frontend/
+# Ignorer les fichiers sensibles
 .env
 
 # Ignorer les fichiers de configuration sensibles
 backend/config/firebase-adminsdk.json
-S3config/
 SMTP/
 
 # Ignorer les fichiers de build et de cache
@@ -16,10 +14,8 @@ Documentation/js/
 Documentation/ts-client/
 
 # Ignorer les fichiers spécifiques à Docker et aux bases de données
-db_data/
 *.sql
 *.log
-docker-compose.yml
 
 # Ignorer les fichiers de configuration spécifiques à l'IDE et au système d'exploitation
 .DS_Store
@@ -33,6 +29,3 @@ bin/
 *.exe
 *.out
 *.app
-
-# Ignorer les fichiers MJML compilés (s'il y en a)
-MJML/node_modules/

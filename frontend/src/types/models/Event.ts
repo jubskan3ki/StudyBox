@@ -1,0 +1,42 @@
+import type { EventCategory } from './EventCategory';
+import type { EventDescription } from './EventDescription';
+import type { EventOption } from './EventOption';
+import type { EventTag } from './EventTag';
+import type { EventTarif } from './EventTarif';
+import type { Ticket } from './Ticket';
+
+export interface Event {
+    id: number;
+    hostId: number;
+    hostType: string;
+    imageUrls: string[];
+    videoUrl?: string;
+    title: string;
+    subtitle?: string;
+    startDate: string;
+    endDate: string;
+    startTime: string;
+    endTime: string;
+    isOnline: boolean;
+    isVisible: boolean;
+    useStudibox: boolean;
+    ticketPrice: number;
+    ticketStock: number;
+    address?: string;
+    city?: string;
+    postcode?: string;
+    region?: string;
+    country?: string;
+    statistics?: string;
+    ticketsSold: number;
+    revenue: number;
+    isValidatedByAdmin: boolean;
+    descriptions: EventDescription[];
+    options: EventOption[];
+    tarifs: EventTarif[];
+    tickets: Ticket[];
+    categories: EventCategory[];
+    tags: EventTag[];
+    createdAt: string;
+    updatedAt: string;
+}
